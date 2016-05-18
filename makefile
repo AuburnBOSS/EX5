@@ -32,8 +32,8 @@ SHELL = /bin/bash
 
 # Append pkg-config specific libraries if need be
 ifneq ($(LIBS),)
-        COMPILE_FLAGS += $(shell pkg-config --cflags $(LIBS))
-        LINK_FLAGS += $(shell pkg-config --libs $(LIBS))
+	COMPILE_FLAGS += $(shell pkg-config --cflags $(LIBS))
+	LINK_FLAGS += $(shell pkg-config --libs $(LIBS))
 endif
 
 # Combine compiler and linker flags
@@ -66,32 +66,32 @@ DEPS = $(OBJECTS:.o=.d) $(TEST_OBJECTS:.o=.d)
 # Release build
 .PHONY: release
 release: dirs
-        @echo "Beginning release build"
-        @$(MAKE) all --no-print-directory
-        @echo
-        @./$(BIN_PATH)/$(TEST_BIN_NAME)
+	@echo "Beginning release build"
+	@$(MAKE) all --no-print-directory
+	@echo
+	@./$(BIN_PATH)/$(TEST_BIN_NAME)
 
 # Debug build for gdb debugging
 .PHONY: debug
 debug: dirs
-        @echo "Beginning debug build"
-        @$(MAKE) all --no-print-directory
-        @echo
-        @./$(BIN_PATH)/$(TEST_BIN_NAME)
+	@echo "Beginning debug build"
+	@$(MAKE) all --no-print-directory
+	@echo
+	@./$(BIN_PATH)/$(TEST_BIN_NAME)
 
 # Create the directories used in the build
 .PHONY: dirs
 dirs:
-        @echo "Creating directories"
-        @mkdir -p $(dir $(OBJECTS))
-        @mkdir -p $(dir $(TEST_OBJECTS))
-        @mkdir -p $(BIN_PATH)
+	@echo "Creating directories"
+	@mkdir -p $(dir $(OBJECTS))
+	@mkdir -p $(dir $(TEST_OBJECTS))
+	@mkdir -p $(BIN_PATH)
 
 # Removes all build files
 .PHONY: clean
 clean:
-        $(RM) -r build
-        $(RM) -r bin
+	$(RM) -r build
+	$(RM) -r bin
 
 # Main rule
 .PHONY: all
@@ -99,12 +99,12 @@ all: $(BIN_PATH)/$(BIN_NAME) $(BIN_PATH)/$(TEST_BIN_NAME)
 
 # Link the executable
 $(BIN_PATH)/$(BIN_NAME): $(OBJECTS)
-        @echo "Linking: $@"
-        $(CC) $(OBJECTS) $(LDFLAGS) -o $@
+	@echo "Linking: $@"
+	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 
 $(BIN_PATH)/$(TEST_BIN_NAME): $(TEST_OBJECTS)
-        @echo "Linking: $@"
-        $(CC) $(TEST_OBJECTS) $(LDFLAGS) -o $@
+	@echo "Linking: $@"
+	$(CC) $(TEST_OBJECTS) $(LDFLAGS) -o $@
 
 # Add dependency files, if they exist
 -include $(DEPS)
@@ -113,10 +113,9 @@ $(BIN_PATH)/$(TEST_BIN_NAME): $(TEST_OBJECTS)
 # After the first compilation they will be joined with the rules from the
 # dependency files to provide header dependencies
 $(BUILD_PATH)/$(SRC_PATH)/%.o: $(SRC_PATH)/%.$(SRC_EXT)
-        @echo "Compiling: $< -> $@"
-        $(CC) $(CFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+	@echo "Compiling: $< -> $@"
+	$(CC) $(CFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 
 $(BUILD_PATH)/$(TEST_PATH)/%.o: $(TEST_PATH)/%.$(SRC_EXT)
-        @echo "Compiling: $< -> $@"
-        $(CC) $(CFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
-
+	@echo "Compiling: $< -> $@"
+	$(CC) $(CFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
